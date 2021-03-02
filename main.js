@@ -79,6 +79,19 @@ async function main() {
                     break
                 }
             }
+        } else {
+            const endpoint = "GET /repos/:owner/:repo/actions/workflows/:id/runs?status=:status&branch=:branch"
+            const params = {
+                owner: owner,
+                repo: repo,
+                id: workflow,
+                branch: branch,
+                status: workflow_conclusion,
+            }
+            var l = 0;
+            for await (const runs of client.paginate.iterator(endpoint, params)) {
+                console.log("==> runs.data " + (l++) + ":", runs.data)
+            }
         }
 
         console.log("==> RunID:", runID)
